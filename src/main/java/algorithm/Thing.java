@@ -28,4 +28,9 @@ public class Thing {
 		this.date = date;
 	}
 
+	@Override
+	public String toString() {
+		return "Thing [name=" + name + ", date=" + date + "]";
+	}
+
 }

@@ -27,7 +27,7 @@ public class WhichTest {
 	}
 	
 	@Test
-	public void shouldReturnAnEmptyAnswer_WhenFindOne_ForOneThing() {
+	public void shouldReturnAnEmptyAnswer_WhenFindTwo_ForOneThing() {
 		List<Thing> inputThings = new ArrayList<Thing>();
 		Thing thing = new Thing("input",new Date());
 		inputThings.add(thing);
@@ -35,4 +35,19 @@ public class WhichTest {
 		Answer result = which.Find(FT.Two);
 		assertEquals(new Answer(), result);
 	}
+	
+	@Test
+	public void shouldReturnAnEmptyAnswer_WhenFindTwo_ForTwoThing() {
+		List<Thing> inputThings = new ArrayList<Thing>();
+		Thing firstThing = new Thing("first input",new Date());
+		Thing secondThing = new Thing("second input",new Date());
+
+		inputThings.add(firstThing);
+		inputThings.add(secondThing);
+		
+		Which which = new Which(inputThings);
+		Answer result = which.Find(FT.Two);
+		assertEquals(new Answer(firstThing,secondThing,0), result);
+	}
+	
 }

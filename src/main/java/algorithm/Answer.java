@@ -1,9 +1,20 @@
 package algorithm;
 
 public class Answer {
+
 	public Thing thing1;
 	public Thing thing2;
 	public long difference;
+
+	public Answer(Thing thing1, Thing thing2, long difference) {
+		super();
+		this.thing1 = thing1;
+		this.thing2 = thing2;
+		this.difference = difference;
+	}
+	
+	public Answer() {
+	}
 
 	@Override
 	public int hashCode() {
@@ -37,6 +48,11 @@ public class Answer {
 		} else if (!thing2.equals(other.thing2))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Answer [thing1=" + thing1 + ", thing2=" + thing2 + ", difference=" + difference + "]";
 	}
 
 }
