@@ -4,36 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Which {
-	private final List inputList;
+	private final List<Thing> inputThings;
 
-	public Which(List inputList) {
-		this.inputList = inputList;
+	public Which(List<Thing> inputThings) {
+		this.inputThings = inputThings;
 	}
 
-	public F Find(FT ft) {
-		List<F> tr = new ArrayList<F>();
+	public Answer Find(FT ft) {
+		List<Answer> tr = new ArrayList<Answer>();
 
-		for (int i = 0; i < inputList.size() - 1; i++) {
-			for (int j = i + 1; j < inputList.size(); j++) {
-				F r = new F();
-				if (((Thing) inputList.get(i)).s.getTime() < ((Thing) inputList.get(j)).s.getTime()) {
-					r.P1 = (Thing) inputList.get(i);
-					r.P2 = (Thing) inputList.get(j);
+		for (int i = 0; i < inputThings.size() - 1; i++) {
+			for (int j = i + 1; j < inputThings.size(); j++) {
+				Answer answer = new Answer();
+				if ((inputThings.get(i)).s.getTime() < (inputThings.get(j)).s.getTime()) {
+					answer.P1 = inputThings.get(i);
+					answer.P2 = inputThings.get(j);
 				} else {
-					r.P1 = (Thing) inputList.get(j);
-					r.P2 = (Thing) inputList.get(i);
+					answer.P1 = inputThings.get(j);
+					answer.P2 = inputThings.get(i);
 				}
-				r.D = r.P2.s.getTime() - r.P1.s.getTime();
-				tr.add(r);
+				answer.D = answer.P2.s.getTime() - answer.P1.s.getTime();
+				tr.add(answer);
 			}
 		}
 
 		if (tr.size() < 1) {
-			return new F();
+			return new Answer();
 		}
 
-		F answer = tr.get(0);
-		for (F result : tr) {
+		Answer answer = tr.get(0);
+		for (Answer result : tr) {
 			switch (ft) {
 				case One :
 					if (result.D < answer.D) {

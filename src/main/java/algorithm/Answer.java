@@ -1,6 +1,6 @@
 package algorithm;
 
-public class F {
+public class Answer {
 	public Thing P1;
 	public Thing P2;
 	public long D;

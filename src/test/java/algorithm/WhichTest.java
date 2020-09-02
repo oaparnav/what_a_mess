@@ -10,7 +10,7 @@ public class WhichTest {
 	@Test
 	public void emptyList() {
 		Which which = new Which(new ArrayList<>());
-		F result = which.Find(FT.One);
+		Answer result = which.Find(FT.One);
 		assertEquals(null, result);
 	}
 }
