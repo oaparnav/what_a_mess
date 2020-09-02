@@ -37,17 +37,16 @@ public class WhichTest {
 	}
 	
 	@Test
-	public void shouldReturnAnEmptyAnswer_WhenFindTwo_ForTwoThing() {
+	public void shouldReturnDescendingOrderWhenFindWithTwoThings() {
 		List<Thing> inputThings = new ArrayList<Thing>();
-		Thing firstThing = new Thing("first input",new Date());
-		Thing secondThing = new Thing("second input",new Date());
+		Thing firstThing = new Thing("first input", new Date());
+		Thing secondThing = new Thing("second input", new Date());
 
 		inputThings.add(firstThing);
 		inputThings.add(secondThing);
 		
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertEquals(new Answer(secondThing,firstThing,0), result);
+		assertEquals(new Answer(secondThing, firstThing, 0), result);
 	}
-	
 }
