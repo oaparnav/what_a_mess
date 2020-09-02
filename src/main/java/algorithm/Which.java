@@ -11,38 +11,25 @@ public class Which {
 	}
 
 	public Answer Find(FT ft) {
-		List<Answer> tr = new ArrayList<Answer>();
+		List<Answer> answers = new ArrayList<>();
 
-		for (int i = 0; i < inputThings.size() - 1; i++) {
-			for (int j = i + 1; j < inputThings.size(); j++) {
-				Answer answer = new Answer();
-				if ((inputThings.get(i)).s.getTime() < (inputThings.get(j)).s.getTime()) {
-					answer.P1 = inputThings.get(i);
-					answer.P2 = inputThings.get(j);
-				} else {
-					answer.P1 = inputThings.get(j);
-					answer.P2 = inputThings.get(i);
-				}
-				answer.D = answer.P2.s.getTime() - answer.P1.s.getTime();
-				tr.add(answer);
-			}
-		}
+		perpareListOfAnswers(answers);
 
-		if (tr.size() < 1) {
+		if (answers.size() < 1) {
 			return new Answer();
 		}
 
-		Answer answer = tr.get(0);
-		for (Answer result : tr) {
+		Answer answer = answers.get(0);
+		for (Answer result : answers) {
 			switch (ft) {
 				case One :
-					if (result.D < answer.D) {
+					if (result.difference < answer.difference) {
 						answer = result;
 					}
 					break;
 
 				case Two :
-					if (result.D > answer.D) {
+					if (result.difference > answer.difference) {
 						answer = result;
 					}
 					break;
@@ -50,5 +37,22 @@ public class Which {
 		}
 
 		return answer;
+	}
+
+	public void perpareListOfAnswers(List<Answer> tr) {
+		for (int i = 0; i < inputThings.size() - 1; i++) {
+			for (int j = i + 1; j < inputThings.size(); j++) {
+				Answer answer = new Answer();
+				if ((inputThings.get(i)).s.getTime() < (inputThings.get(j)).s.getTime()) {
+					answer.thing1 = inputThings.get(i);
+					answer.thing2 = inputThings.get(j);
+				} else {
+					answer.thing1 = inputThings.get(j);
+					answer.thing2 = inputThings.get(i);
+				}
+				answer.difference = answer.thing2.s.getTime() - answer.thing1.s.getTime();
+				tr.add(answer);
+			}
+		}
 	}
 }

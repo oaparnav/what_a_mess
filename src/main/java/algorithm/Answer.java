@@ -1,7 +1,7 @@
 package algorithm;
 
 public class Answer {
-	public Thing P1;
-	public Thing P2;
-	public long D;
+	public Thing thing1;
+	public Thing thing2;
+	public long difference;
 }
