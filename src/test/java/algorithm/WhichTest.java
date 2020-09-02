@@ -47,7 +47,7 @@ public class WhichTest {
 		
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertEquals(new Answer(firstThing,secondThing,0), result);
+		assertEquals(new Answer(secondThing,firstThing,0), result);
 	}
 	
 }
