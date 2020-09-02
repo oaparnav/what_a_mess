@@ -3,19 +3,29 @@ package algorithm;
 import java.util.Date;
 
 public class Thing {
-	public String c;
-	public Date s;
+	public String name;
+	public Date date;
 
 	public String getC() {
-		return c;
+		return name;
 	}
+
 	public void setC(String c) {
-		this.c = c;
+		this.name = c;
 	}
+
 	public Date getS() {
-		return s;
+		return date;
 	}
+
 	public void setS(Date anotherS) {
-		this.s = anotherS;
+		this.date = anotherS;
 	}
+
+	public Thing(String name, Date date) {
+		super();
+		this.name = name;
+		this.date = date;
+	}
+
 }

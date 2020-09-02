@@ -43,14 +43,14 @@ public class Which {
 		for (int i = 0; i < inputThings.size() - 1; i++) {
 			for (int j = i + 1; j < inputThings.size(); j++) {
 				Answer answer = new Answer();
-				if ((inputThings.get(i)).s.getTime() < (inputThings.get(j)).s.getTime()) {
+				if ((inputThings.get(i)).date.getTime() < (inputThings.get(j)).date.getTime()) {
 					answer.thing1 = inputThings.get(i);
 					answer.thing2 = inputThings.get(j);
 				} else {
 					answer.thing1 = inputThings.get(j);
 					answer.thing2 = inputThings.get(i);
 				}
-				answer.difference = answer.thing2.s.getTime() - answer.thing1.s.getTime();
+				answer.difference = answer.thing2.date.getTime() - answer.thing1.date.getTime();
 				tr.add(answer);
 			}
 		}
