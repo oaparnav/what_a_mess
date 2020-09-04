@@ -25,7 +25,7 @@ public class WhichTest {
 
 	@Test
 	public void shouldReturnAnEmptyAnswer_ForOneThing() {
-		List<Thing> inputThings= getInputThingsWithSingleThing();
+		List<Thing> inputThings= getInputThings(1);
 		
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.One);
@@ -59,18 +59,18 @@ public class WhichTest {
 		inputThings = getInputThings(2);
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertEquals(new Answer(firstThing, secondThing, -1), result);
+		assertEquals(new Answer(new Thing("name0", createDate(0)), new Thing("name1", createDate(1)), 1000), result);
 	}
 	
 	private List<Thing> getInputThings(int numberOfThings) {
+		
 		return IntStream.range(0, numberOfThings)
-				.mapToObj(num -> new Thing("name"+num, Date.from(LocalDateTime.now().plusSeconds(num).atZone(ZoneId.systemDefault()).toInstant())))
+				.mapToObj(num -> new Thing("name"+num, createDate(num)))
 				.collect(Collectors.toList());
 	}
-	
-	private List<Thing> getInputThingsWithSingleThing() {
-		Thing thing = new Thing("input",new Date());
-		inputThings.add(thing);
-		return inputThings;
+
+	private Date createDate(int num) {
+		return Date.from(LocalDateTime.of(2020, 9, 04, 12, 00, 00).plusSeconds(num).atZone(ZoneId.systemDefault()).toInstant());
 	}
+	
 }
