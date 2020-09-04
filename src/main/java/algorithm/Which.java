@@ -11,9 +11,7 @@ public class Which {
 	}
 
 	public Answer Find(FT ft) {
-		List<Answer> answers = new ArrayList<>();
-
-		perpareListOfAnswers(answers);
+		List<Answer> answers = prepareAnswers();
 
 		if (answers.size() < 1) {
 			return new Answer();
@@ -39,20 +37,23 @@ public class Which {
 		return answer;
 	}
 
-	public void perpareListOfAnswers(List<Answer> tr) {
+	public List<Answer> prepareAnswers() {
+		List<Answer> answers = new ArrayList<>();
+
 		for (int i = 0; i < inputThings.size() - 1; i++) {
 			for (int j = i + 1; j < inputThings.size(); j++) {
-				Answer answer = new Answer();
+				Answer answer1 = new Answer();
 				if ((inputThings.get(i)).date.getTime() < (inputThings.get(j)).date.getTime()) {
-					answer.thing1 = inputThings.get(i);
-					answer.thing2 = inputThings.get(j);
+					answer1.thing1 = inputThings.get(i);
+					answer1.thing2 = inputThings.get(j);
 				} else {
-					answer.thing1 = inputThings.get(j);
-					answer.thing2 = inputThings.get(i);
+					answer1.thing1 = inputThings.get(j);
+					answer1.thing2 = inputThings.get(i);
 				}
-				answer.difference = answer.thing2.date.getTime() - answer.thing1.date.getTime();
-				tr.add(answer);
+				answer1.difference = answer1.thing2.date.getTime() - answer1.thing1.date.getTime();
+				answers.add(answer1);
 			}
 		}
+		return answers;
 	}
 }

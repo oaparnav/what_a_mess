@@ -73,4 +73,30 @@ public class WhichTest {
 		return Date.from(LocalDateTime.of(2020, 9, 04, 12, 00, 00).plusSeconds(num).atZone(ZoneId.systemDefault()).toInstant());
 	}
 	
+	@Test
+	public void returnEmptyAnswersForEmptyInputThings() {
+		inputThings =getInputThings(0);
+		Which which = new Which(inputThings);
+		assertEquals(new ArrayList<>(),which.prepareAnswers());
+	}
+	
+	@Test
+	public void returnEmptyAnswersForOneInputThing() {
+		inputThings =getInputThings(1);
+		Which which = new Which(inputThings);
+		assertEquals(new ArrayList<>(),which.prepareAnswers());
+	}
+	
+	@Test
+	public void returnEmptyAnswersForTwoInputThings() {
+		inputThings =getInputThings(2);
+		Which which = new Which(inputThings);
+		assertEquals(prepareExpectedAnswers(),which.prepareAnswers());
+	}
+
+	private List<Answer> prepareExpectedAnswers(int numberOfThings) {
+		return IntStream.range(0, numberOfThings)
+				.mapToObj(num-> new Answer(new Thing("name"+num, createDate(num)), thing2, difference)))
+				.collect(Collectors.toList());
+	}
 }
