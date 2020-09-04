@@ -13,6 +13,7 @@ import java.util.stream.IntStream;
 import org.junit.Test;
 
 public class WhichTest {
+	private static final String NAME = "name";
 	List<Thing> inputThings = new ArrayList<Thing>();
 	Thing firstThing, secondThing;
 	
@@ -59,13 +60,13 @@ public class WhichTest {
 		inputThings = getInputThings(2);
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertEquals(new Answer(new Thing("name0", createDate(0)), new Thing("name1", createDate(1)), 1000), result);
+		assertEquals(new Answer(new Thing(NAME, createDate(0)), new Thing(NAME, createDate(1)), 1000), result);
 	}
 	
 	private List<Thing> getInputThings(int numberOfThings) {
 		
 		return IntStream.range(0, numberOfThings)
-				.mapToObj(num -> new Thing("name"+num, createDate(num)))
+				.mapToObj(num -> new Thing(NAME, createDate(num)))
 				.collect(Collectors.toList());
 	}
 
@@ -91,12 +92,13 @@ public class WhichTest {
 	public void returnEmptyAnswersForTwoInputThings() {
 		inputThings =getInputThings(2);
 		Which which = new Which(inputThings);
-		assertEquals(prepareExpectedAnswers(),which.prepareAnswers());
+		assertEquals(prepareExpectedAnswers(1),which.prepareAnswers());
 	}
+	
 
 	private List<Answer> prepareExpectedAnswers(int numberOfThings) {
 		return IntStream.range(0, numberOfThings)
-				.mapToObj(num-> new Answer(new Thing("name"+num, createDate(num)), thing2, difference)))
+				.mapToObj(num-> new Answer(new Thing(NAME, createDate(num)), new Thing(NAME, createDate(num+1)), 1000))
 				.collect(Collectors.toList());
 	}
 }
