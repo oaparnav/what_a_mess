@@ -55,22 +55,16 @@ public class WhichTest {
 
 	@Test
 	public void shouldReturnAnswerWithDifferentDateWhenFindWithTwoThings() {
-		Thing firstThing = new Thing("first input", new Date());
-		Thing secondThing = new Thing("second input", Date.from(LocalDateTime.now().plusMinutes(30).atZone(ZoneId.systemDefault()).toInstant()));
-
-		inputThings.add(firstThing);
-		inputThings.add(secondThing);
 		
-		long differences = secondThing.date.getTime() - firstThing.date.getTime();
 		inputThings = getInputThings(2);
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertEquals(new Answer(firstThing, secondThing, differences), result);
+		assertEquals(new Answer(firstThing, secondThing, -1), result);
 	}
 	
 	private List<Thing> getInputThings(int numberOfThings) {
 		return IntStream.range(0, numberOfThings)
-				.mapToObj(num -> new Thing("name"+num, new Date()))
+				.mapToObj(num -> new Thing("name"+num, Date.from(LocalDateTime.now().plusSeconds(num).atZone(ZoneId.systemDefault()).toInstant())))
 				.collect(Collectors.toList());
 	}
 	
