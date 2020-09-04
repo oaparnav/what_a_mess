@@ -7,6 +7,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 
@@ -23,40 +25,34 @@ public class WhichTest {
 
 	@Test
 	public void shouldReturnAnEmptyAnswer_ForOneThing() {
-		Thing thing = new Thing("input",new Date());
-		inputThings.add(thing);
+		List<Thing> inputThings= getInputThingsWithSingleThing();
+		
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.One);
+		
 		assertEquals(new Answer(), result);
 	}
-	
+
 	@Test
 	public void shouldReturnAnEmptyAnswer_WhenFindTwo_ForOneThing() {
-		Thing thing = new Thing("input",new Date());
-		inputThings.add(thing);
+		List<Thing> inputThings = getInputThings(1);
+		
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
+		
 		assertEquals(new Answer(), result);
 	}
 	
 	@Test
 	public void shouldReturnDescendingOrderWhenFindWithTwoThings() {
 		
-		input();
+		List<Thing> inputThings = getInputThings(1);
 		
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
 		assertEquals(new Answer(secondThing, firstThing, 0), result);
 	}
 
-	private void input() {
-		firstThing = new Thing("first input", new Date());
-		secondThing = new Thing("second input", new Date());
-
-		inputThings.add(firstThing);
-		inputThings.add(secondThing);
-	}
-	
 	@Test
 	public void shouldReturnAnswerWithDifferentDateWhenFindWithTwoThings() {
 		Thing firstThing = new Thing("first input", new Date());
@@ -66,9 +62,21 @@ public class WhichTest {
 		inputThings.add(secondThing);
 		
 		long differences = secondThing.date.getTime() - firstThing.date.getTime();
-		
+		inputThings = getInputThings(2);
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
 		assertEquals(new Answer(firstThing, secondThing, differences), result);
+	}
+	
+	private List<Thing> getInputThings(int numberOfThings) {
+		return IntStream.range(0, numberOfThings)
+				.mapToObj(num -> new Thing("name"+num, new Date()))
+				.collect(Collectors.toList());
+	}
+	
+	private List<Thing> getInputThingsWithSingleThing() {
+		Thing thing = new Thing("input",new Date());
+		inputThings.add(thing);
+		return inputThings;
 	}
 }
