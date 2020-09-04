@@ -56,13 +56,15 @@ public class WhichTest {
 	public void shouldReturnAnswerWithDifferentDateWhenFindWithTwoThings() {
 		List<Thing> inputThings = new ArrayList<Thing>();
 		Thing firstThing = new Thing("first input", new Date());
-		Thing secondThing = new Thing("second input", Date.from(LocalDateTime.now().plusMinutes(30).toInstant(ZoneId.systemDefault())));
+		Thing secondThing = new Thing("second input", Date.from(LocalDateTime.now().plusMinutes(30).atZone(ZoneId.systemDefault()).toInstant()));
 
 		inputThings.add(firstThing);
 		inputThings.add(secondThing);
 		
+		long differences = firstThing.date.getTime() - secondThing.date.getTime();
+		
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertEquals(new Answer(secondThing, firstThing, 0), result);
+		assertEquals(new Answer(firstThing, secondThing, differences), result);
 	}
 }
