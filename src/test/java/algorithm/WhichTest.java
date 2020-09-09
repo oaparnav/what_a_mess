@@ -46,7 +46,6 @@ public class WhichTest {
 	
 	@Test
 	public void shouldReturnDescendingOrderWhenFindWithTwoThings() {
-		
 		List<Thing> inputThings = getInputThings(1);
 		
 		Which which = new Which(inputThings);
@@ -63,6 +62,34 @@ public class WhichTest {
 		assertEquals(new Answer(new Thing(NAME, createDate(0)), new Thing(NAME, createDate(1)), 1000), result);
 	}
 	
+	@Test
+	public void returnEmptyAnswersForEmptyInputThings() {
+		inputThings =getInputThings(0);
+		Which which = new Which(inputThings);
+		assertEquals(new ArrayList<>(), which.prepareAnswers());
+	}
+	
+	@Test
+	public void returnEmptyAnswersForOneInputThing() {
+		inputThings =getInputThings(1);
+		Which which = new Which(inputThings);
+		assertEquals(new ArrayList<>(), which.prepareAnswers());
+	}
+	
+	@Test
+	public void returnEmptyAnswersForTwoInputThings() {
+		inputThings =getInputThings(2);
+		Which which = new Which(inputThings);
+		assertEquals(prepareExpectedAnswers(1), which.prepareAnswers());
+	}
+	
+	@Test
+	public void returnEmptyAnswersForThreeInputThings() {
+		inputThings =getInputThings(3);
+		Which which = new Which(inputThings);
+		assertEquals(prepareExpectedAnswers(3), which.prepareAnswers());
+	}
+	
 	private List<Thing> getInputThings(int numberOfThings) {
 		
 		return IntStream.range(0, numberOfThings)
@@ -74,28 +101,6 @@ public class WhichTest {
 		return Date.from(LocalDateTime.of(2020, 9, 04, 12, 00, 00).plusSeconds(num).atZone(ZoneId.systemDefault()).toInstant());
 	}
 	
-	@Test
-	public void returnEmptyAnswersForEmptyInputThings() {
-		inputThings =getInputThings(0);
-		Which which = new Which(inputThings);
-		assertEquals(new ArrayList<>(),which.prepareAnswers());
-	}
-	
-	@Test
-	public void returnEmptyAnswersForOneInputThing() {
-		inputThings =getInputThings(1);
-		Which which = new Which(inputThings);
-		assertEquals(new ArrayList<>(),which.prepareAnswers());
-	}
-	
-	@Test
-	public void returnEmptyAnswersForTwoInputThings() {
-		inputThings =getInputThings(2);
-		Which which = new Which(inputThings);
-		assertEquals(prepareExpectedAnswers(1),which.prepareAnswers());
-	}
-	
-
 	private List<Answer> prepareExpectedAnswers(int numberOfThings) {
 		return IntStream.range(0, numberOfThings)
 				.mapToObj(num-> new Answer(new Thing(NAME, createDate(num)), new Thing(NAME, createDate(num+1)), 1000))
