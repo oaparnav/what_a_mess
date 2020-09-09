@@ -2,6 +2,7 @@ package algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Which {
 	private final List<Thing> inputThings;
@@ -41,12 +42,19 @@ public class Which {
 		List<Answer> answers = new ArrayList<>();
 
 		for (int i = 0; i < inputThings.size() - 1; i++) {
-			for (int j = i + 1; j < inputThings.size(); j++) {
-				Answer answer = createAnswerWithSortedThings(inputThings.get(i), inputThings.get(j));
-				answers.add(answer);
-			}
+			Thing firstThing = inputThings.get(i);
+			List<Thing> subList = inputThings.subList(i+1, inputThings.size());
+			List<Answer> subAnswers = prerareSubAnswers(firstThing, subList);
+			answers.addAll(subAnswers);
 		}
 		return answers;
+	}
+
+	public List<Answer> prerareSubAnswers(Thing firstThing, List<Thing> subList) {
+		List<Answer> subAnswers = subList.stream().map(secondThing -> 
+		createAnswerWithSortedThings(firstThing, secondThing))
+				.collect(Collectors.toList());
+		return subAnswers;
 	}
 
 	public Answer createAnswerWithSortedThings(Thing firstThing, Thing secondThing) {
