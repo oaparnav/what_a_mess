@@ -42,18 +42,31 @@ public class Which {
 
 		for (int i = 0; i < inputThings.size() - 1; i++) {
 			for (int j = i + 1; j < inputThings.size(); j++) {
-				Answer answer1 = new Answer();
-				if ((inputThings.get(i)).date.getTime() < (inputThings.get(j)).date.getTime()) {
-					answer1.thing1 = inputThings.get(i);
-					answer1.thing2 = inputThings.get(j);
-				} else {
-					answer1.thing1 = inputThings.get(j);
-					answer1.thing2 = inputThings.get(i);
-				}
-				answer1.difference = answer1.thing2.date.getTime() - answer1.thing1.date.getTime();
+				Answer answer1 = createAnswer(i, j);
 				answers.add(answer1);
 			}
 		}
 		return answers;
+	}
+
+	private Answer createAnswer(int i, int j) {
+		
+		Thing firstThing = inputThings.get(i);
+		Thing secondThing = inputThings.get(j);
+		Answer answer1 = createAnswerWithSortedThings(firstThing, secondThing);
+		return answer1;
+	}
+
+	public Answer createAnswerWithSortedThings(Thing firstThing, Thing secondThing) {
+		Answer answer1 = new Answer();
+		if (firstThing.date.getTime() < secondThing.date.getTime()) {
+			answer1.thing1 = firstThing;
+			answer1.thing2 = secondThing;
+		} else {
+			answer1.thing1 = secondThing;
+			answer1.thing2 = firstThing;
+		}
+		answer1.difference = answer1.thing2.date.getTime() - answer1.thing1.date.getTime();
+		return answer1;
 	}
 }

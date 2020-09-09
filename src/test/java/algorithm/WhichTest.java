@@ -90,6 +90,12 @@ public class WhichTest {
 		assertEquals(prepareExpectedAnswers(3), which.prepareAnswers());
 	}
 	
+	@Test
+	public void returnAnswerWithSortedThings() {
+		Thing firstThing = new Thing("firstThing", createDate(0));
+		Thing secondThing = new Thing("secondThing", createDate(5));
+	}
+	
 	private List<Thing> getInputThings(int numberOfThings) {
 		
 		return IntStream.range(0, numberOfThings)
