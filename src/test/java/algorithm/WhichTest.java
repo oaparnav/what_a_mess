@@ -1,7 +1,6 @@
 package algorithm;
 
-import static org.junit.Assert.assertEquals;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class WhichTest {
 	public void shouldReturnAnEmptyAnswer() {
 		Which which = new Which(new ArrayList<>());
 		Answer result = which.Find(FT.One);
-		assertEquals(new Answer(), result);
+		assertThat(result).isEqualTo(new Answer());
 	}
 
 	@Test
@@ -31,7 +30,7 @@ public class WhichTest {
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.One);
 		
-		assertEquals(new Answer(), result);
+		assertThat(result).isEqualTo(new Answer());
 	}
 
 	@Test
@@ -41,7 +40,7 @@ public class WhichTest {
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
 		
-		assertEquals(new Answer(), result);
+		assertThat(result).isEqualTo(new Answer());
 	}
 	
 	@Test
@@ -50,7 +49,7 @@ public class WhichTest {
 		
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertEquals(new Answer(secondThing, firstThing, 0), result);
+		assertThat(result).isEqualTo(new Answer(secondThing, firstThing, 0));
 	}
 
 	@Test
@@ -59,41 +58,46 @@ public class WhichTest {
 		inputThings = getInputThings(2);
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertEquals(new Answer(new Thing(NAME, createDate(0)), new Thing(NAME, createDate(1)), 1000), result);
+		assertThat(result).isEqualTo(new Answer(new Thing(NAME, createDate(0)), new Thing(NAME, createDate(1)), 1000));
 	}
 	
 	@Test
 	public void returnEmptyAnswersForEmptyInputThings() {
 		inputThings =getInputThings(0);
 		Which which = new Which(inputThings);
-		assertEquals(new ArrayList<>(), which.prepareAnswers());
+		assertThat(which.prepareAnswers()).isEqualTo(new ArrayList<>());
 	}
 	
 	@Test
 	public void returnEmptyAnswersForOneInputThing() {
 		inputThings =getInputThings(1);
 		Which which = new Which(inputThings);
-		assertEquals(new ArrayList<>(), which.prepareAnswers());
+		assertThat(which.prepareAnswers()).isEqualTo(new ArrayList<>());
 	}
 	
 	@Test
 	public void returnEmptyAnswersForTwoInputThings() {
 		inputThings =getInputThings(2);
 		Which which = new Which(inputThings);
-		assertEquals(prepareExpectedAnswers(1), which.prepareAnswers());
+		assertThat(which.prepareAnswers()).isEqualTo(prepareExpectedAnswers(1));
 	}
 	
 	@Test
 	public void returnEmptyAnswersForThreeInputThings() {
 		inputThings =getInputThings(3);
 		Which which = new Which(inputThings);
-		assertEquals(prepareExpectedAnswers(3), which.prepareAnswers());
+		assertThat(which.prepareAnswers()).isEqualTo(prepareExpectedAnswers(3));
 	}
 	
 	@Test
 	public void returnAnswerWithSortedThings() {
 		Thing firstThing = new Thing("firstThing", createDate(0));
 		Thing secondThing = new Thing("secondThing", createDate(5));
+		
+		Which which = new Which(null);
+		
+		Answer answer = which.createAnswerWithSortedThings(firstThing, secondThing);
+		assertThat(answer).isEqualTo(new Answer(firstThing, secondThing, 5000));
 	}
 	
 	private List<Thing> getInputThings(int numberOfThings) {
