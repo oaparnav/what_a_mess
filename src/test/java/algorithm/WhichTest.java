@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -126,6 +127,41 @@ public class WhichTest {
 		
 		Answer answer = which.createAnswerWithSortedThings(firstThing, secondThing);
 		assertThat(answer).isEqualTo(new Answer(secondThing, firstThing, 0));
+	}
+	
+	@Test
+	public void returnSubAnswerWithEmptyInputList() {
+		Thing firstThing = new Thing("firstThing", createDate(5));
+		
+		Which which = new Which(null);
+		List<Answer> subAnswers = which.prerareSubAnswers(firstThing, new ArrayList<>());
+		assertThat(subAnswers).isEmpty();
+	}
+	
+	@Test
+	public void returnSubAnswerWithSortedThingsForOrderTwo() {
+		Thing firstThing = new Thing("firstThing", createDate(0));
+		Thing secondThing = new Thing("secondThing", createDate(5));
+		List<Thing> subList = Arrays.asList(secondThing);
+		Which which = new Which(null);
+		List<Answer> subAnswers = which.prerareSubAnswers(firstThing, subList);
+		assertThat(subAnswers.size()).isEqualTo(subList.size());
+		assertThat(subAnswers.get(0)).isEqualTo(new Answer(firstThing, secondThing, 5000));
+	}
+	
+	@Test
+	public void returnSubAnswerWithSortedThingsForOrderThree() {
+		Thing firstThing = new Thing("firstThing", createDate(0));
+		Thing secondThing = new Thing("secondThing", createDate(5));
+		Thing thirdThing = new Thing("thirdThing", createDate(-3));
+		List<Thing> subList = Arrays.asList(secondThing, thirdThing);
+		
+		Which which = new Which(null);
+		List<Answer> subAnswers = which.prerareSubAnswers(firstThing, subList);
+		
+		assertThat(subAnswers.size()).isEqualTo(subList.size());
+		assertThat(subAnswers.get(0)).isEqualTo(new Answer(firstThing, secondThing, 5000));
+		assertThat(subAnswers.get(1)).isEqualTo(new Answer(thirdThing, firstThing, 3000));
 	}
 	
 	private List<Thing> getInputThings(int numberOfThings) {
