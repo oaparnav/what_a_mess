@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class WhichTest {
-	private static final String NAME = "name";
+	private static final String NAME = "Thing";
 	List<Thing> inputThings = new ArrayList<Thing>();
 	Thing firstThing, secondThing;
 	
@@ -58,7 +59,7 @@ public class WhichTest {
 		inputThings = getInputThings(2);
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
-		assertThat(result).isEqualTo(new Answer(new Thing(NAME, createDate(0)), new Thing(NAME, createDate(1)), 1000));
+		assertThat(result).isEqualTo(new Answer(new Thing(NAME+0, createDate(0)), new Thing(NAME+1, createDate(1)), 1000));
 	}
 	
 	@Test
@@ -86,11 +87,16 @@ public class WhichTest {
 	public void returnEmptyAnswersForThreeInputThings() {
 		inputThings =getInputThings(3);
 		Which which = new Which(inputThings);
-		assertThat(which.prepareAnswers()).isEqualTo(prepareExpectedAnswers(3));
+		List<Answer> expectedAnswers = prepareExpectedAnswers(3);
+		expectedAnswers.forEach(ans-> System.out.println(ans.thing1 + " : " + ans.thing2 + " : " + ans.difference));
+		which.prepareAnswers().forEach(ans-> System.out.println(ans.thing1 + " : " + ans.thing2 + " : " + ans.difference));
+		assertThat(which.prepareAnswers().get(0)).isEqualTo(expectedAnswers.get(0));
+		assertThat(which.prepareAnswers().get(1)).isEqualTo(expectedAnswers.get(1));
+		assertThat(which.prepareAnswers().get(2)).isEqualTo(expectedAnswers.get(2));
 	}
 	
 	@Test
-	public void returnAnswerWithSortedThings() {
+	public void returnAnswerWithSortedThingsForOrderOne() {
 		Thing firstThing = new Thing("firstThing", createDate(0));
 		Thing secondThing = new Thing("secondThing", createDate(5));
 		
@@ -100,10 +106,32 @@ public class WhichTest {
 		assertThat(answer).isEqualTo(new Answer(firstThing, secondThing, 5000));
 	}
 	
+	@Test
+	public void returnAnswerWithSortedThingsForOrderTwo() {
+		Thing firstThing = new Thing("firstThing", createDate(5));
+		Thing secondThing = new Thing("secondThing", createDate(0));
+		
+		Which which = new Which(null);
+		
+		Answer answer = which.createAnswerWithSortedThings(firstThing, secondThing);
+		assertThat(answer).isEqualTo(new Answer(secondThing, firstThing, 5000));
+	}
+	
+	@Test
+	public void returnAnswerWithSortedThingsForSameOrder() {
+		Thing firstThing = new Thing("firstThing", createDate(0));
+		Thing secondThing = new Thing("secondThing", createDate(0));
+		
+		Which which = new Which(null);
+		
+		Answer answer = which.createAnswerWithSortedThings(firstThing, secondThing);
+		assertThat(answer).isEqualTo(new Answer(secondThing, firstThing, 0));
+	}
+	
 	private List<Thing> getInputThings(int numberOfThings) {
 		
 		return IntStream.range(0, numberOfThings)
-				.mapToObj(num -> new Thing(NAME, createDate(num)))
+				.mapToObj(num -> new Thing(NAME+num, createDate(num)))
 				.collect(Collectors.toList());
 	}
 
@@ -113,7 +141,7 @@ public class WhichTest {
 	
 	private List<Answer> prepareExpectedAnswers(int numberOfThings) {
 		return IntStream.range(0, numberOfThings)
-				.mapToObj(num-> new Answer(new Thing(NAME, createDate(num)), new Thing(NAME, createDate(num+1)), 1000))
+				.mapToObj(num-> new Answer(new Thing(NAME+num, createDate(num)), new Thing(NAME+(num+1), createDate(num+1)), 1000))
 				.collect(Collectors.toList());
 	}
 }

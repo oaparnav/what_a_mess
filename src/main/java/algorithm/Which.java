@@ -42,31 +42,23 @@ public class Which {
 
 		for (int i = 0; i < inputThings.size() - 1; i++) {
 			for (int j = i + 1; j < inputThings.size(); j++) {
-				Answer answer1 = createAnswer(i, j);
-				answers.add(answer1);
+				Answer answer = createAnswerWithSortedThings(inputThings.get(i), inputThings.get(j));
+				answers.add(answer);
 			}
 		}
 		return answers;
 	}
 
-	private Answer createAnswer(int i, int j) {
-		
-		Thing firstThing = inputThings.get(i);
-		Thing secondThing = inputThings.get(j);
-		Answer answer1 = createAnswerWithSortedThings(firstThing, secondThing);
-		return answer1;
-	}
-
 	public Answer createAnswerWithSortedThings(Thing firstThing, Thing secondThing) {
-		Answer answer1 = new Answer();
+		Answer answer = new Answer();
 		if (firstThing.date.getTime() < secondThing.date.getTime()) {
-			answer1.thing1 = firstThing;
-			answer1.thing2 = secondThing;
+			answer.thing1 = firstThing;
+			answer.thing2 = secondThing;
 		} else {
-			answer1.thing1 = secondThing;
-			answer1.thing2 = firstThing;
+			answer.thing1 = secondThing;
+			answer.thing2 = firstThing;
 		}
-		answer1.difference = answer1.thing2.date.getTime() - answer1.thing1.date.getTime();
-		return answer1;
+		answer.difference = answer.thing2.date.getTime() - answer.thing1.date.getTime();
+		return answer;
 	}
 }
