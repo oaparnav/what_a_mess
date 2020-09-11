@@ -18,24 +18,25 @@ public class Which {
 			return new Answer();
 		}
 
-		Answer answer = answers.get(0);
-		for (Answer result : answers) {
+		Answer firstAnswer = answers.get(0);
+		Answer result = firstAnswer;
+		for (Answer answer : answers) {
 			switch (ft) {
 				case One :
-					if (result.difference < answer.difference) {
-						answer = result;
+					if (answer.difference < firstAnswer.difference) {
+						result = answer;
 					}
 					break;
 
 				case Two :
-					if (result.difference > answer.difference) {
-						answer = result;
+					if (answer.difference > firstAnswer.difference) {
+						result = answer;
 					}
 					break;
 			}
 		}
 
-		return answer;
+		return result;
 	}
 
 	public List<Answer> prepareAnswers() {
