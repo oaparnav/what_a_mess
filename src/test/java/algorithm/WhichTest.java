@@ -1,7 +1,6 @@
 package algorithm;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -62,7 +61,7 @@ public class WhichTest {
 		Which which = new Which(inputThings);
 		Answer result = which.Find(FT.Two);
 		assertThat(result)
-				.isEqualTo(new Answer(new Thing(NAME + 0, createDate(0)), new Thing(NAME + 1, createDate(1)), 1000));
+				.isEqualTo(new Answer(new Thing(NAME + 1, createDate(1)), new Thing(NAME + 2, createDate(2)), 1000));
 	}
 
 	@Test
@@ -83,8 +82,11 @@ public class WhichTest {
 	public void returnOneAnswersForTwoInputThings() {
 		inputThings = getInputThings(2);
 		Which which = new Which(inputThings);
-
-		assertThat(which.prepareAnswers()).isEqualTo(prepareExpectedAnswers(1, 1));
+		List<Answer> prepareExpectedAnswers = prepareExpectedAnswers(2, 1);
+		
+		assertThat(which.prepareAnswers().get(0).thing1).isEqualTo(prepareExpectedAnswers.get(1).thing1);
+		assertThat(which.prepareAnswers().get(0).thing2).isEqualTo(prepareExpectedAnswers.get(1).thing2);
+		assertThat(which.prepareAnswers().get(0).difference).isEqualTo(prepareExpectedAnswers.get(1).difference);
 	}
 
 	@Test
@@ -212,16 +214,25 @@ public class WhichTest {
 	public void findLeastAnswerForMulitpleAnswers() throws Exception {
 		Which which = new Which(null);
 		Answer answer = which.findAnswerFor(FT.One, prepareExpectedAnswers());
-		assertThat(answer).isEqualTo(prepareExpectedAnswers(2, 1).get(0));
+		assertThat(answer).isEqualTo(new Answer(new Thing("thing4", createDate(4)), new Thing("thing5", createDate(5)), 1));
+	}
+	
+	@Test
+	public void findHighestAnswerForMulitpleAnswers() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(FT.Two, prepareExpectedAnswers());
+		assertThat(answer).isEqualTo(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(3)), 3));
 	}
 	
 	
 
 	private List<Answer> prepareExpectedAnswers() {
-		//List<Answer> answers = new ArrayList<>();
-		//answers.add(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(0)), difference))
-	
-	return null;
+		List<Answer> answers = new ArrayList<>();
+		answers.add(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(3)), 3));
+		answers.add(new Answer(new Thing("thing4", createDate(4)), new Thing("thing5", createDate(5)), 1));
+		answers.add(new Answer(new Thing("thing3", createDate(3)), new Thing("thing5", createDate(4)), 2));
+		answers.add(new Answer(new Thing("thing5", createDate(5)), new Thing("thing6", createDate(6)), 1));
+		return answers;
 	}
 
 	private List<Thing> getInputThings(int numberOfThings) {
