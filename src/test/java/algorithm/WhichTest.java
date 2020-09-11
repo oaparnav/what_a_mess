@@ -1,6 +1,7 @@
 package algorithm;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -169,7 +170,8 @@ public class WhichTest {
 		assertThat(subAnswers.size()).isEqualTo(subList.size());
 		assertThat(subAnswers.get(0)).isEqualTo(new Answer(firstThing, secondThing, 5000));
 	}
-
+	
+	
 	@Test
 	public void returnSubAnswerWithSortedThingsForOrderThree() {
 		Thing firstThing = new Thing("firstThing", createDate(0));
@@ -183,6 +185,43 @@ public class WhichTest {
 		assertThat(subAnswers.size()).isEqualTo(subList.size());
 		assertThat(subAnswers.get(0)).isEqualTo(new Answer(firstThing, secondThing, 5000));
 		assertThat(subAnswers.get(1)).isEqualTo(new Answer(thirdThing, firstThing, 3000));
+	}
+	
+	@Test
+	public void findLeastAnswerForSingleAnswer() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(FT.One, prepareExpectedAnswers(1,1));
+		assertThat(answer).isEqualTo(prepareExpectedAnswers(1, 1).get(0));
+	}
+	
+	@Test
+	public void findHighestAnswerForSingleAnswer() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(FT.Two, prepareExpectedAnswers(1,1));
+		assertThat(answer).isEqualTo(prepareExpectedAnswers(1, 1).get(0));
+	}
+	
+	@Test
+	public void findLeastAnswerForTwoAnswers() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(FT.One, prepareExpectedAnswers(2,1));
+		assertThat(answer).isEqualTo(prepareExpectedAnswers(2, 1).get(0));
+	}
+	
+	@Test
+	public void findLeastAnswerForMulitpleAnswers() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(FT.One, prepareExpectedAnswers());
+		assertThat(answer).isEqualTo(prepareExpectedAnswers(2, 1).get(0));
+	}
+	
+	
+
+	private List<Answer> prepareExpectedAnswers() {
+		//List<Answer> answers = new ArrayList<>();
+		//answers.add(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(0)), difference))
+	
+	return null;
 	}
 
 	private List<Thing> getInputThings(int numberOfThings) {

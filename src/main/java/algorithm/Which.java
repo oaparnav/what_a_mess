@@ -18,6 +18,10 @@ public class Which {
 			return new Answer();
 		}
 
+		return findAnswerFor(ft, answers);
+	}
+
+	public Answer findAnswerFor(FT ft, List<Answer> answers) {
 		Answer answer = answers.get(0);
 		for (Answer result : answers) {
 			switch (ft) {
