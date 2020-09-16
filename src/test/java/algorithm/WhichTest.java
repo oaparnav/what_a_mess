@@ -245,7 +245,13 @@ public class WhichTest {
 		assertThat(answer).isEqualTo(new Answer(new Thing("thing2", createDate(2)), new Thing("thing1", createDate(1)), 1));
 	}
 	
-
+	@Test
+	public void returnLastElementAsAnswerIfDifferenceIsAscOrdderforMaxCriteria() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(Criteria.MAX, prepareExpectedAnswersWithAscOrdderDifference());
+		assertThat(answer).isEqualTo(new Answer(new Thing("thing2", createDate(5)), new Thing("thing1", createDate(1)), 4));
+	}
+	
 	private List<Answer> prepareExpectedAnswers() {
 		List<Answer> answers = new ArrayList<>();
 		answers.add(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(3)), 3));
@@ -266,10 +272,19 @@ public class WhichTest {
 	
 	private List<Answer> prepareExpectedAnswersWithDecOrdderDifference() {
 		List<Answer> answers = new ArrayList<>();
-		answers.add(new Answer(new Thing("thin6", createDate(6)), new Thing("thing5", createDate(2)), 4));
+		answers.add(new Answer(new Thing("thing6", createDate(6)), new Thing("thing5", createDate(2)), 4));
 		answers.add(new Answer(new Thing("thing5", createDate(5)), new Thing("thing4", createDate(2)), 3));
 		answers.add(new Answer(new Thing("thing4", createDate(4)), new Thing("thing3", createDate(2)), 2));
 		answers.add(new Answer(new Thing("thing2", createDate(2)), new Thing("thing1", createDate(1)), 1));
+		return answers;
+	}
+	
+	private List<Answer> prepareExpectedAnswersWithAscOrdderDifference() {
+		List<Answer> answers = new ArrayList<>();
+		answers.add(new Answer(new Thing("thing6", createDate(2)), new Thing("thing5", createDate(1)), 1));
+		answers.add(new Answer(new Thing("thing5", createDate(3)), new Thing("thing4", createDate(1)), 2));
+		answers.add(new Answer(new Thing("thing4", createDate(4)), new Thing("thing3", createDate(1)), 3));
+		answers.add(new Answer(new Thing("thing2", createDate(5)), new Thing("thing1", createDate(1)), 4));
 		return answers;
 	}
 	

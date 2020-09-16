@@ -1,18 +1,18 @@
 package algorithm;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
-public class MinCriteria implements AnswerStrategy {
+public class AnswerFinder {
 
-	@Override
-	public Answer apply(List<Answer> answers) {
-		
+	public BiFunction<List<Answer>, Boolean, Answer> finder = (answers, canApply) -> {
 		Answer finalAnswer = answers.get(0);
 		for (Answer answer : answers) {
-			if (answer.difference < finalAnswer.difference) {
+			if (canApply) {
 				finalAnswer = answer;
 			}
 		}
 		return finalAnswer;
-	}
+	};
+
 }
