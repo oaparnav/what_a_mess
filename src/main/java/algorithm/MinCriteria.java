@@ -9,7 +9,7 @@ public class MinCriteria implements AnswerStrategy {
 		Answer finalAnswer = answers.get(0);
 		for (Answer answer : answers) {
 			if (answer.difference < finalAnswer.difference) {
-				return answer;
+				finalAnswer = answer;
 			}
 		}
 		return finalAnswer;

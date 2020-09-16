@@ -237,6 +237,14 @@ public class WhichTest {
 		Answer answer = which.findAnswerFor(Criteria.MIN, prepareExpectedAnswersWithEqualDifference());
 		assertThat(answer).isEqualTo(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(1)), 1));
 	}
+	
+	@Test
+	public void returnLastElementAsAnswerIfDifferenceIsDecOrdderforMinCriteria() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(Criteria.MIN, prepareExpectedAnswersWithDecOrdderDifference());
+		assertThat(answer).isEqualTo(new Answer(new Thing("thing2", createDate(2)), new Thing("thing1", createDate(1)), 1));
+	}
+	
 
 	private List<Answer> prepareExpectedAnswers() {
 		List<Answer> answers = new ArrayList<>();
@@ -253,6 +261,15 @@ public class WhichTest {
 		answers.add(new Answer(new Thing("thing4", createDate(4)), new Thing("thing5", createDate(5)), 1));
 		answers.add(new Answer(new Thing("thing3", createDate(3)), new Thing("thing5", createDate(4)), 1));
 		answers.add(new Answer(new Thing("thing5", createDate(5)), new Thing("thing6", createDate(6)), 1));
+		return answers;
+	}
+	
+	private List<Answer> prepareExpectedAnswersWithDecOrdderDifference() {
+		List<Answer> answers = new ArrayList<>();
+		answers.add(new Answer(new Thing("thin6", createDate(6)), new Thing("thing5", createDate(2)), 4));
+		answers.add(new Answer(new Thing("thing5", createDate(5)), new Thing("thing4", createDate(2)), 3));
+		answers.add(new Answer(new Thing("thing4", createDate(4)), new Thing("thing3", createDate(2)), 2));
+		answers.add(new Answer(new Thing("thing2", createDate(2)), new Thing("thing1", createDate(1)), 1));
 		return answers;
 	}
 	

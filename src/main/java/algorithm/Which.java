@@ -22,36 +22,16 @@ public class Which {
 	}
 
 	public Answer findAnswerFor(Criteria criteria, List<Answer> answers) {
-		Answer finalAnswer = answers.get(0);
-		AnswerStrategy strategy = chooseStrategy(criteria);
-		return strategy.apply(answers);
+		return chooseStrategy(criteria).apply(answers);
 		
-//		for (Answer answer : answers) {
-//			switch (criteria) {
-//				case MIN :
-//					if (answer.difference < finalAnswer.difference) {
-//						finalAnswer = answer;
-//					}
-//					break;
-//
-//				case MAX :
-//					if (answer.difference > finalAnswer.difference) {
-//						finalAnswer = answer;
-//					}
-//					break;
-//			}
-//		}
-		
-//		return finalAnswer;
 	}
 
 	private AnswerStrategy chooseStrategy(Criteria criteria) {
 		if (criteria.equals(Criteria.MIN)) {
-			new MinCriteria();
+			return new MinCriteria();
 		} else {
-			new MaxCriteria();
+			return new MaxCriteria();
 		}
-		return null;
 	}
 
 	public List<Answer> prepareAnswers() {
