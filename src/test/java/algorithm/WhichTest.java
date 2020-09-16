@@ -21,7 +21,7 @@ public class WhichTest {
 	@Test
 	public void shouldReturnAnEmptyAnswer() {
 		Which which = new Which(new ArrayList<>());
-		Answer result = which.Find(FT.One);
+		Answer result = which.Find(Criteria.MIN);
 		assertThat(result).isEqualTo(new Answer());
 	}
 
@@ -30,7 +30,7 @@ public class WhichTest {
 		List<Thing> inputThings = getInputThings(1);
 
 		Which which = new Which(inputThings);
-		Answer result = which.Find(FT.One);
+		Answer result = which.Find(Criteria.MIN);
 
 		assertThat(result).isEqualTo(new Answer());
 	}
@@ -40,7 +40,7 @@ public class WhichTest {
 		List<Thing> inputThings = getInputThings(1);
 
 		Which which = new Which(inputThings);
-		Answer result = which.Find(FT.Two);
+		Answer result = which.Find(Criteria.MAX);
 
 		assertThat(result).isEqualTo(new Answer());
 	}
@@ -50,7 +50,7 @@ public class WhichTest {
 		List<Thing> inputThings = getInputThings(1);
 
 		Which which = new Which(inputThings);
-		Answer result = which.Find(FT.Two);
+		Answer result = which.Find(Criteria.MAX);
 		assertThat(result).isEqualTo(new Answer(secondThing, firstThing, 0));
 	}
 
@@ -59,7 +59,7 @@ public class WhichTest {
 
 		inputThings = getInputThings(2);
 		Which which = new Which(inputThings);
-		Answer result = which.Find(FT.Two);
+		Answer result = which.Find(Criteria.MAX);
 		assertThat(result)
 				.isEqualTo(new Answer(new Thing(NAME + 1, createDate(1)), new Thing(NAME + 2, createDate(2)), 1000));
 	}
@@ -192,39 +192,51 @@ public class WhichTest {
 	@Test
 	public void findLeastAnswerForSingleAnswer() throws Exception {
 		Which which = new Which(null);
-		Answer answer = which.findAnswerFor(FT.One, prepareExpectedAnswers(1,1));
+		Answer answer = which.findAnswerFor(Criteria.MIN, prepareExpectedAnswers(1,1));
 		assertThat(answer).isEqualTo(prepareExpectedAnswers(1, 1).get(0));
 	}
 	
 	@Test
 	public void findHighestAnswerForSingleAnswer() throws Exception {
 		Which which = new Which(null);
-		Answer answer = which.findAnswerFor(FT.Two, prepareExpectedAnswers(1,1));
+		Answer answer = which.findAnswerFor(Criteria.MAX, prepareExpectedAnswers(1,1));
 		assertThat(answer).isEqualTo(prepareExpectedAnswers(1, 1).get(0));
 	}
 	
 	@Test
 	public void findLeastAnswerForTwoAnswers() throws Exception {
 		Which which = new Which(null);
-		Answer answer = which.findAnswerFor(FT.One, prepareExpectedAnswers(2,1));
+		Answer answer = which.findAnswerFor(Criteria.MIN, prepareExpectedAnswers(2,1));
 		assertThat(answer).isEqualTo(prepareExpectedAnswers(2, 1).get(0));
 	}
 	
 	@Test
 	public void findLeastAnswerForMulitpleAnswers() throws Exception {
 		Which which = new Which(null);
-		Answer answer = which.findAnswerFor(FT.One, prepareExpectedAnswers());
+		Answer answer = which.findAnswerFor(Criteria.MIN, prepareExpectedAnswers());
 		assertThat(answer).isEqualTo(new Answer(new Thing("thing4", createDate(4)), new Thing("thing5", createDate(5)), 1));
 	}
 	
 	@Test
 	public void findHighestAnswerForMulitpleAnswers() throws Exception {
 		Which which = new Which(null);
-		Answer answer = which.findAnswerFor(FT.Two, prepareExpectedAnswers());
+		Answer answer = which.findAnswerFor(Criteria.MAX, prepareExpectedAnswers());
 		assertThat(answer).isEqualTo(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(3)), 3));
 	}
 	
+	@Test
+	public void returnSameAnswerIfDifferenceIsEqualforMaxCriteria() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(Criteria.MAX, prepareExpectedAnswersWithEqualDifference());
+		assertThat(answer).isEqualTo(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(1)), 1));
+	}
 	
+	@Test
+	public void returnSameAnswerIfDifferenceIsEqualforMinCriteria() throws Exception {
+		Which which = new Which(null);
+		Answer answer = which.findAnswerFor(Criteria.MIN, prepareExpectedAnswersWithEqualDifference());
+		assertThat(answer).isEqualTo(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(1)), 1));
+	}
 
 	private List<Answer> prepareExpectedAnswers() {
 		List<Answer> answers = new ArrayList<>();
@@ -235,6 +247,14 @@ public class WhichTest {
 		return answers;
 	}
 
+	private List<Answer> prepareExpectedAnswersWithEqualDifference() {
+		List<Answer> answers = new ArrayList<>();
+		answers.add(new Answer(new Thing("thing1", createDate(0)), new Thing("thing2", createDate(1)), 1));
+		answers.add(new Answer(new Thing("thing4", createDate(4)), new Thing("thing5", createDate(5)), 1));
+		answers.add(new Answer(new Thing("thing3", createDate(3)), new Thing("thing5", createDate(4)), 1));
+		answers.add(new Answer(new Thing("thing5", createDate(5)), new Thing("thing6", createDate(6)), 1));
+		return answers;
+	}
 	private List<Thing> getInputThings(int numberOfThings) {
 
 		return IntStream.range(1, numberOfThings + 1).mapToObj(num -> new Thing(NAME + num, createDate(num)))

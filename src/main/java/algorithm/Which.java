@@ -11,35 +11,35 @@ public class Which {
 		this.inputThings = inputThings;
 	}
 
-	public Answer Find(FT ft) {
+	public Answer Find(Criteria criteria) {
 		List<Answer> answers = prepareAnswers();
 
 		if (answers.size() < 1) {
 			return new Answer();
 		}
 
-		return findAnswerFor(ft, answers);
+		return findAnswerFor(criteria, answers);
 	}
 
-	public Answer findAnswerFor(FT ft, List<Answer> answers) {
-		Answer answer = answers.get(0);
-		for (Answer result : answers) {
-			switch (ft) {
-				case One :
-					if (result.difference < answer.difference) {
-						answer = result;
+	public Answer findAnswerFor(Criteria criteria, List<Answer> answers) {
+		Answer finalAnswer = answers.get(0);
+		for (Answer answer : answers) {
+			switch (criteria) {
+				case MIN :
+					if (answer.difference < finalAnswer.difference) {
+						finalAnswer = answer;
 					}
 					break;
 
-				case Two :
-					if (result.difference > answer.difference) {
-						answer = result;
+				case MAX :
+					if (answer.difference > finalAnswer.difference) {
+						finalAnswer = answer;
 					}
 					break;
 			}
 		}
 
-		return answer;
+		return finalAnswer;
 	}
 
 	public List<Answer> prepareAnswers() {
