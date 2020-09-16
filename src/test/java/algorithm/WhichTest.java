@@ -255,6 +255,7 @@ public class WhichTest {
 		answers.add(new Answer(new Thing("thing5", createDate(5)), new Thing("thing6", createDate(6)), 1));
 		return answers;
 	}
+	
 	private List<Thing> getInputThings(int numberOfThings) {
 
 		return IntStream.range(1, numberOfThings + 1).mapToObj(num -> new Thing(NAME + num, createDate(num)))

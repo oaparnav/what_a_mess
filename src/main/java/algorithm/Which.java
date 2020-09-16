@@ -23,6 +23,9 @@ public class Which {
 
 	public Answer findAnswerFor(Criteria criteria, List<Answer> answers) {
 		Answer finalAnswer = answers.get(0);
+		AnswerStrategy strategy = chooseStrategy(criteria);
+		return strategy.apply(answers);
+		
 		for (Answer answer : answers) {
 			switch (criteria) {
 				case MIN :
@@ -38,7 +41,7 @@ public class Which {
 					break;
 			}
 		}
-
+		
 		return finalAnswer;
 	}
 
