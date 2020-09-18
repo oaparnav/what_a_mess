@@ -68,14 +68,14 @@ public class WhichTest {
 	public void returnEmptyAnswersForEmptyInputThings() {
 		inputThings = getInputThings(0);
 		Which which = new Which(inputThings);
-		assertThat(which.prepareAnswers()).isEqualTo(new ArrayList<>());
+		assertThat(which.prepareAnswers(inputThings)).isEqualTo(new ArrayList<>());
 	}
 
 	@Test
 	public void returnEmptyAnswersForOneInputThing() {
 		inputThings = getInputThings(1);
 		Which which = new Which(inputThings);
-		assertThat(which.prepareAnswers()).isEqualTo(new ArrayList<>());
+		assertThat(which.prepareAnswers(inputThings)).isEqualTo(new ArrayList<>());
 	}
 
 	@Test
@@ -84,9 +84,9 @@ public class WhichTest {
 		Which which = new Which(inputThings);
 		List<Answer> prepareExpectedAnswers = prepareExpectedAnswers(2, 1);
 		
-		assertThat(which.prepareAnswers().get(0).thing1).isEqualTo(prepareExpectedAnswers.get(1).thing1);
-		assertThat(which.prepareAnswers().get(0).thing2).isEqualTo(prepareExpectedAnswers.get(1).thing2);
-		assertThat(which.prepareAnswers().get(0).difference).isEqualTo(prepareExpectedAnswers.get(1).difference);
+		assertThat(which.prepareAnswers(inputThings).get(0).getThing1()).isEqualTo(prepareExpectedAnswers.get(1).getThing1());
+		assertThat(which.prepareAnswers(inputThings).get(0).getThing2()).isEqualTo(prepareExpectedAnswers.get(1).getThing2());
+		assertThat(which.prepareAnswers(inputThings).get(0).getDifference()).isEqualTo(prepareExpectedAnswers.get(1).getDifference());
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class WhichTest {
 		inputThings = getInputThings(3);
 		Which which = new Which(inputThings);
 
-		List<Answer> answers = which.prepareAnswers();
+		List<Answer> answers = which.prepareAnswers(inputThings);
 
 		assertThat(answers.size()).isEqualTo(3);
 		
@@ -105,7 +105,7 @@ public class WhichTest {
 		inputThings = getInputThings(4);
 		Which which = new Which(inputThings);
 
-		List<Answer> answers = which.prepareAnswers();
+		List<Answer> answers = which.prepareAnswers(inputThings);
 
 		assertThat(answers.size()).isEqualTo(6);
 	}
@@ -115,7 +115,7 @@ public class WhichTest {
 		inputThings = getInputThings(5);
 		Which which = new Which(inputThings);
 
-		List<Answer> answers = which.prepareAnswers();
+		List<Answer> answers = which.prepareAnswers(inputThings);
 
 		assertThat(answers.size()).isEqualTo(10);
 	}

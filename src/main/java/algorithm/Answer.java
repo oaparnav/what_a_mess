@@ -2,9 +2,9 @@ package algorithm;
 
 public class Answer {
 
-	public Thing thing1;
-	public Thing thing2;
-	public long difference;
+	private Thing thing1;
+	private Thing thing2;
+	private long difference;
 
 	public Answer(Thing thing1, Thing thing2, long difference) {
 		super();
@@ -15,6 +15,20 @@ public class Answer {
 	
 	public Answer() {
 	}
+	
+	public Thing getThing1() {
+		return thing1;
+	}
+
+	public Thing getThing2() {
+		return thing2;
+	}
+
+	public long getDifference() {
+		return difference;
+	}
+
+
 
 	@Override
 	public int hashCode() {

@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Which {
-	private final List<Thing> inputThings;
+
+	private final List<Answer> answers;
 
 	public Which(List<Thing> inputThings) {
-		this.inputThings = inputThings;
+		this.answers = prepareAnswers(inputThings);
 	}
 
 	public Answer Find(Criteria criteria) {
-		List<Answer> answers = prepareAnswers();
-
 		if (answers.size() < 1) {
 			return new Answer();
 		}
@@ -26,16 +26,16 @@ public class Which {
 		return criteria.getStrategy().apply(answers);
 	}
 
-	public List<Answer> prepareAnswers() {
-		List<Answer> answers = new ArrayList<>();
+	public List<Answer> prepareAnswers(List<Thing> inputThings) {
+		return Optional.ofNullable(inputThings).map(things -> {
+			return IntStream.range(0, things.size()).mapToObj(num -> {
+				Thing firstThing = things.get(num);
+				List<Thing> subList = things.subList(num+1, things.size());
+				return prerareSubAnswers(firstThing, subList);
+			}).flatMap(answers -> answers.stream())
+					.collect(Collectors.toList());
+		}).orElse(new ArrayList<Answer>());
 
-		for (int i = 0; i < inputThings.size() - 1; i++) {
-			Thing firstThing = inputThings.get(i);
-			List<Thing> subList = inputThings.subList(i+1, inputThings.size());
-			List<Answer> subAnswers = prerareSubAnswers(firstThing, subList);
-			answers.addAll(subAnswers);
-		}
-		return answers;
 	}
 
 	public List<Answer> prerareSubAnswers(Thing firstThing, List<Thing> subList) {
@@ -46,21 +46,19 @@ public class Which {
 	}
 
 	public Answer createAnswerWithSortedThings(Thing firstThing, Thing secondThing) {
-		
-		Answer answer = new Answer();
-		if (firstThing.date.getTime() < secondThing.date.getTime()) {
-			answer.thing1 = firstThing;
-			answer.thing2 = secondThing;
+
+		if (firstThing.getDate().getTime() < secondThing.getDate().getTime()) {
+			return createAnswer(firstThing, secondThing);
 		} else {
-			answer.thing1 = secondThing;
-			answer.thing2 = firstThing;
+			return createAnswer(secondThing, firstThing);
 		}
-		answer.difference = answer.thing2.date.getTime() - answer.thing1.date.getTime();
-		return answer;
-		
-//		return Optional.ofNullable(answer).filter(value -> firstThing.date.getTime() < secondThing.date.getTime())
-//				   .map(value -> new Answer(firstThing, secondThing, secondThing.date.getTime() - firstThing.date.getTime()))
-//				   .orElse(new Answer(secondThing, firstThing, firstThing.date.getTime() - secondThing.date.getTime()));
-//	
+	}
+
+	private Answer createAnswer(Thing firstThing, Thing secondThing) {
+		return new Answer(firstThing, secondThing, finDifference(firstThing, secondThing));
+	}
+
+	private long finDifference(Thing firstThing, Thing secondThing) {
+		return secondThing.getDate().getTime() - firstThing.getDate().getTime();
 	}
 }

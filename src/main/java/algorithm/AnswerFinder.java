@@ -9,7 +9,7 @@ public class AnswerFinder {
 	public BiFunction<List<Answer>, BiPredicate<Long, Long>, Answer> find = (answers, evaluate) -> {
 		Answer finalAnswer = answers.get(0);
 		for (Answer answer : answers) {
-			if (evaluate.test(answer.difference, finalAnswer.difference)) {
+			if (evaluate.test(answer.getDifference(), finalAnswer.getDifference())) {
 				finalAnswer = answer;
 			}
 		}
