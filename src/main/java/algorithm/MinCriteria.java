@@ -1,18 +1,14 @@
 package algorithm;
 
 import java.util.List;
+import java.util.function.BiPredicate;
 
 public class MinCriteria implements AnswerStrategy {
 
 	@Override
 	public Answer apply(List<Answer> answers) {
 		
-		Answer finalAnswer = answers.get(0);
-		for (Answer answer : answers) {
-			if (answer.difference < finalAnswer.difference) {
-				finalAnswer = answer;
-			}
-		}
-		return finalAnswer;
+		BiPredicate<Long, Long> evaluate = (val1, val2) -> val1 < val2;
+		return new AnswerFinder().find.apply(answers, evaluate);
 	}
 }
