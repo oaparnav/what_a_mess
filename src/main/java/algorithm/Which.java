@@ -2,6 +2,7 @@ package algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Which {
@@ -45,6 +46,7 @@ public class Which {
 	}
 
 	public Answer createAnswerWithSortedThings(Thing firstThing, Thing secondThing) {
+		
 		Answer answer = new Answer();
 		if (firstThing.date.getTime() < secondThing.date.getTime()) {
 			answer.thing1 = firstThing;
@@ -55,5 +57,10 @@ public class Which {
 		}
 		answer.difference = answer.thing2.date.getTime() - answer.thing1.date.getTime();
 		return answer;
+		
+//		return Optional.ofNullable(answer).filter(value -> firstThing.date.getTime() < secondThing.date.getTime())
+//				   .map(value -> new Answer(firstThing, secondThing, secondThing.date.getTime() - firstThing.date.getTime()))
+//				   .orElse(new Answer(secondThing, firstThing, firstThing.date.getTime() - secondThing.date.getTime()));
+//	
 	}
 }
