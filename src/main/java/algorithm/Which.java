@@ -22,16 +22,7 @@ public class Which {
 	}
 
 	public Answer findAnswerFor(Criteria criteria, List<Answer> answers) {
-		return chooseStrategy(criteria).apply(answers);
-		
-	}
-
-	private AnswerStrategy chooseStrategy(Criteria criteria) {
-		if (criteria.equals(Criteria.MIN)) {
-			return new MinCriteria();
-		} else {
-			return new MaxCriteria();
-		}
+		return criteria.getStrategy().apply(answers);
 	}
 
 	public List<Answer> prepareAnswers() {
